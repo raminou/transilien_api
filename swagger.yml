@@ -1,0 +1,324 @@
+openapi: 3.0.0
+info:
+  title: "Transilien"
+  version: "1.0.0"
+  description: "Transilien API"
+
+servers:
+  - url: "https://www.transilien.com"
+    description: "Production"
+
+tags:
+  - name: "Train"
+    description: "Train"
+  - name: "Station"
+    description: "Station"
+
+paths:
+  /aidesaisie/autocompletion/stopareas:
+    get:
+      tags:
+      - "Station"
+      summary: "Get the list of the available stations"
+      description: ""
+      parameters: []
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  content:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Station"
+  /api/nextDeparture/search:
+    post:
+      tags:
+      - "Station"
+      - "Train"
+      summary: "Get the next trains at a specific station"
+      description: ""
+      parameters: []
+      requestBody:
+        description: "Details about the trip"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                departure:
+                  type: "string"
+                  description: "Station name of the departure"
+                uicArrival:
+                  type: "string"
+                  description: "UIC of the arrival station"
+              required:
+              - departure
+      responses:
+        200:
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StationNextDeparture"
+components:
+  schemas:
+    Station:
+      type: "object"
+      properties:
+        label:
+          type: "string"
+          description: "Station name"
+        value:
+          type: "string"
+          description: "?"
+        coordonneeX:
+          type: "string"
+          description: "?"
+        coordonneeY:
+          type: "string"
+          description: "?"
+        name:
+          type: "string"
+          description: "?"
+        typeRue:
+          type: "string"
+          description: "?"
+        city:
+          type: "string"
+          description: "?"
+        coordLambertX:
+          type: "string"
+          description: "?"
+        coordLambertY:
+          type: "string"
+          description: "?"
+        uic:
+          type: "string"
+          description: "UIC Station"
+        train:
+          type: "boolean"
+          description: "Train at this station"
+        rer:
+          type: "boolean"
+          description: "RER at this station"
+        tramway:
+          type: "boolean"
+          description: "Tramway at this station"
+        metro:
+          type: "boolean"
+          description: "Metro at this station"
+        bateau:
+          type: "boolean"
+          description: "Boat at this station"
+        navette:
+          type: "boolean"
+          description: "Navette at this station"
+        bus:
+          type: "boolean"
+          description: "Bus at this station"
+        stopPoint:
+          type: "string"
+          description: "?"
+        ratp:
+          type: "string"
+          description: "Is RATP"
+        sncf:
+          type: "boolean"
+          description: "Is SNCF"
+        keywords:
+          type: "array"
+          description: "Keywords associated to the station"
+          items:
+            type: "string"
+            description: "Keyword"
+        nbAutomates:
+          type: "number"
+          description: "Number of machines"
+        tempsReel:
+          type: "boolean"
+          description: "Is in real time"
+        lignes:
+          type: "boolean"
+          description: "?"
+        entryPointType:
+          type: "string"
+          description: "?"
+    StationNextDeparture:
+      type: "object"
+      properties:
+        platformAvailable:
+          type: "boolean"
+          description: "?"
+        disruptionsAvailable:
+          type: "boolean"
+          description: "?"
+        arrivalTimeAvailable:
+          type: "boolean"
+          description: "?"
+        nextTrainsList:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Train"
+        departureStopArea:
+          type: "object"
+          properties:
+            codeUic7:
+              type: "number"
+              description: "UIC Station"
+            label:
+              type: "string"
+              description: "Station name"
+            accessibilityServices:
+              type: "array"
+              items:
+                $ref: "#/components/schemas/AccessibilityService"
+            pmrElevatorService:
+              $ref: "#/components/schemas/AccessibilityService"
+            elevatorsInfo:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  status:
+                    type: "string"
+                    description: "Is it operational"
+                  direction:
+                    type: "string"
+                    description: "Which direction"
+                  location:
+                    type: "string"
+                    description: "Where it is"
+                  endOfmaintenanceDate:
+                    type: "string"
+                    description: "?"
+            automaton:
+              type: "boolean"
+              description: "?"
+        arrivalStopArea:
+          type: "string"
+          description: "?"
+    Train:
+      type: "object"
+      properties:
+        modeTransportEnum:
+          type: "string"
+          description: "Transport Mode"
+        lineTransportEnum:
+          type: "string"
+          description: "Transport Line"
+        typeTrain:
+          type: "string"
+          description: "Train Type (SHORT or LONG)"
+        codeMission:
+          type: "string"
+          description: "Train name - Train Mission"
+        canceled:
+          type: "boolean"
+          description: "Is the train canceled"
+        delayed:
+          type: "boolean"
+          description: "Is the train delayed"
+        departureTime:
+          type: "string"
+          description: "Departure time"
+        arrivalTime:
+          type: "string"
+          description: "Arrival time"
+        destinationMission:
+          type: "string"
+          description: "Destination Station"
+        platform:
+          type: "string"
+          description: "Platform at the station"
+        deservedStations:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              label:
+                type: "string"
+                description: "Station Name"
+              time:
+                type: "string"
+                description: "Arrival Time at the station"
+        hasTraficDisruption:
+          type: "boolean"
+          description: "Is there some trafic disruption"
+        hasTravauxDisruption:
+          type: "boolean"
+          description: "Is there some works disruption"
+        disruptions:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Disruption"
+    Disruption:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "?"
+        creationDate:
+          type: "string"
+          description: "?"
+        updateDate:
+          type: "string"
+          format: "YYYY-MM-DD\\THH:mm:ss"
+          description: "Last Update Date"
+        title:
+          type: "string"
+          description: "Disruption title"
+        type:
+          type: "string"
+          description: "Disruption type"
+        validityPeriods:
+          type: "array"
+          description: "Periods of disruption"
+          items:
+            type: "object"
+            properties:
+              startDate:
+                type: "string"
+                format: "YYYY-MM-DD\\THH:mm:ss"
+                description: "Start date period"
+              endDate:
+                type: "string"
+                format: "YYYY-MM-DD\\THH:mm:ss"
+                description: "End date period"
+              now:
+                type: "boolean"
+                description: "Is it during it"
+        detail:
+          type: "string"
+          description: "Detail about this disruption"
+        startingApplicationDate:
+          type: "string"
+          format: "YYYY-MM-DD\\THH:mm:ss"
+          description: "?"
+        hasSubstitutionBus:
+          type: "boolean"
+          description: "Is there bus to replace"
+        line:
+          type: "string"
+          description: "Line name"
+        transport:
+          type: "string"
+          description: "?"
+    AccessibilityService:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Name of the accessibility service"
+        nameWithParkingInfo:
+          type: "string"
+          description: "Name of the accessibility service"
+        openingInfos:
+          type: "array"
+          items:
+            type: "string"
+            description: "?"
