@@ -21,6 +21,12 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(s1 == s2)
         self.assertTrue(s1 != s3)
 
+    def test_search_places(self):
+        s1 = models.station.Station.search_list_places("austerlitz")
+        s2 = models.station.Station.search_list_places("dourdan la foret", models.station.PlaceType.tramway)
+        self.assertTrue(len(s1) != 0)
+        self.assertTrue(len(s2) == 0)
+
 
 if __name__ == '__main__':
     unittest.main()

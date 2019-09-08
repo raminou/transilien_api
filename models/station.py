@@ -33,6 +33,16 @@ class StationKey(enum.Enum):
     entryPointType = "entryPointType"
 
 
+class PlaceType(enum.Enum):
+    no_filter = ""
+    train = "train"
+    metro = "metro"
+    rer = "rer"
+    bus = "bus"
+    navette = "navette"
+    tramway = "tramway"
+
+
 class Station:
     def __init__(self, station_data, loaded=False):
         self.station_data = station_data
@@ -81,5 +91,13 @@ class Station:
                         return station
             return None
 
-    # @staticmethod
-    # def search(name):
+    @staticmethod
+    def search_list_places(name, filter_item=PlaceType.no_filter):
+        if(not isinstance(filter_item, PlaceType)):
+            raise TypeError("filter_item must have the type PlaceType")
+        r = requests.get("https://www.transilien.com/api/places", params={"search": name})
+        data = json.loads(r.text)
+        if(filter_item != PlaceType.no_filter):
+            return [place for place in data['places'] if place[filter_item.value]]
+        else:
+            return data['places']
