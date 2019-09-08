@@ -1,4 +1,22 @@
 from models.station import Station
+import enum
+
+
+class TrainType(enum.Enum):
+    modeTransportEnum = "modeTransportEnum"
+    lineTransportEnum = "lineTransportEnum"
+    typeTrain = "typeTrain"
+    codeMission = "codeMission"
+    canceled = "canceled"
+    delayed = "delayed"
+    departureTime = "departureTime"
+    arrivalTime = "arrivalTime"
+    destinationMission = "destinationMission"
+    platform = "platform"
+    deservedStations = "deservedStations"
+    hasTraficDisruption = "hasTraficDisruption"
+    hasTravauxDisruption = "hasTravauxDisruption"
+    disruptions = "disruptions"
 
 
 class Train:
@@ -9,15 +27,5 @@ class Train:
                 self.deservedStations[i]['station'] = Station.find_station(self.deservedStations[i]['label'])
 
     def __getattr__(self, key):
-        return self[key]
-
-    def __setattr__(self, key, value):
-        self[key] = value
-
-    def __getitem__(self, key):
-        if (key in self.data):
+        if(key in TrainType.__members__):
             return self.data[key]
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        self.station_data[key] = value

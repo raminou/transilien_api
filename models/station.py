@@ -1,8 +1,36 @@
 import requests
 import json
+import enum
 import utils
 
 stations_manager = [], False
+
+
+class StationKey(enum.Enum):
+    label = "label"
+    value = "value"
+    coordonneeX = "coordonneeX"
+    coordonneeY = "coordonneeY"
+    name = "name"
+    typeRue = "typeRue"
+    city = "city"
+    coordLambertX = "coordLambertX"
+    coordLambertY = "coordLambertY"
+    uic = "uic"
+    train = "train"
+    rer = "rer"
+    tramway = "tramway"
+    metro = "metro"
+    bateau = "bateau"
+    navette = "navette"
+    bus = "bus"
+    stopPoint = "stopPoint"
+    ratp = "ratp"
+    sncf = "sncf"
+    keywords = "keywords"
+    tempsReel = "tempsReel"
+    lignes = "lignes"
+    entryPointType = "entryPointType"
 
 
 class Station:
@@ -10,18 +38,14 @@ class Station:
         self.station_data = station_data
 
     def __getattr__(self, key):
-        return self[key]
-
-    def __setattr__(self, key, value):
-        self[key] = value
-
-    def __getitem__(self, key):
-        if (key in self.station_data):
+        if(key in StationKey.__members__):
             return self.station_data[key]
         raise KeyError
 
-    def __setitem__(self, key, value):
+    """
+    def __setattr__(self, key, value):
         self.station_data[key] = value
+    """
 
     def __eq__(self, other):
         return isinstance(other, Station) and self.label == other.label
@@ -34,6 +58,7 @@ class Station:
             try:
                 r = requests.get("https://www.transilien.com/aidesaisie/autocompletion/stopareas")
                 data = json.loads(r.text)
+                test = [Station(station) for station in data['content']]
                 stations_manager = {station['label']: Station(station, True) for station in data['content']}, True
             except:
                 return None
@@ -55,3 +80,6 @@ class Station:
                     if(keyword == name):
                         return station
             return None
+
+    # @staticmethod
+    # def search(name):
