@@ -1,2 +1,2 @@
 def sanitize_name(name):
-    return name
+    return name.upper()

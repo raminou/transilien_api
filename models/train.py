@@ -29,3 +29,10 @@ class Train:
     def __getattr__(self, key):
         if(key in TrainType.__members__):
             return self.data[key]
+
+    def __str__(self):
+        s = self.lineTransportEnum + "\t" + self.departureTime + "\t" + self.arrivalTime + "\t" \
+               + self.typeTrain + "\t" + self.platform + "\t" + self.codeMission + "\t" + self.destinationMission + "\n"
+        for deserved_station in self.deservedStations:
+            s += "\t" + deserved_station['time'] + "\t" + deserved_station["label"] + "\n"
+        return s
