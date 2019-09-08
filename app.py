@@ -4,8 +4,8 @@ import sys
 from models.trip import Trip
 from models.station import Station, PlaceType
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-subparsers = parser.add_subparsers(dest='command', help='commands')
+parser = argparse.ArgumentParser(description='Use the Transilien API to get informations about your trains')
+subparsers = parser.add_subparsers(dest='command', help='Command')
 
 # Trains parser
 trains_parser = subparsers.add_parser('trains', help='Next train from the departure station')
@@ -13,11 +13,10 @@ trains_parser.add_argument('dep_station', help='Departure station')
 trains_parser.add_argument('arr_station', help='Arrival station', nargs='?', default='')
 
 # Search Places parser
-search_parser = subparsers.add_parser('search', help='Next train from the departure station')
+search_parser = subparsers.add_parser('search', help='Search for a place')
 search_parser.add_argument('query', help='query')
 
 args = parser.parse_args()
-print(args)
 
 if(args.command == "trains"):
     dep_station = Station.find_station(args.dep_station)

@@ -9,7 +9,22 @@ Install the environment
 pip install -r requirements.txt
 ```
 
-### Next trains
+### Command Line
+
+Get the next trains:
+
+```shell script
+python app.py trains "GARE DE PARIS AUSTERLITZ" "JUVISY"
+```
+
+Search for a place
+```shell script
+python app.py search "paris"
+```
+
+### Python API
+
+#### Next trains
 
 Look for the next trains at a station
 ```python
@@ -27,7 +42,7 @@ Trip object attributes are:
  - `trip.departureStopArea` *(dict})*: Details about departure station
  - `trip.arrivalStopArea` *(obj)*: Details about arrival station
 
-### Places
+#### Places
 
 Search for a place
 ```python
@@ -51,7 +66,7 @@ Place object attributes are:
  - `place.metro` *(boolean)*: is there metro
  - `place.navette` *(boolean)*: is there shuttle bus
 
-### Stations 
+#### Stations 
 
 Get more information about a station
 ```python
@@ -87,7 +102,7 @@ Station object attributes are:
  - lignes *(boolean)*: ?
  - entryPointType *(?)*: ?
 
-### Train
+#### Train
 
 Train object attributes are:
 
@@ -106,7 +121,7 @@ Train object attributes are:
  - hastringavauxDisruption *(boolean)*
  - disruptions *(List[[Disruption](#disruption)])*
  
-### Disruption
+#### Disruption
  
 Disruption object attributes are:
 
