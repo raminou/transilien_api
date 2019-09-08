@@ -23,7 +23,7 @@ Trip object attributes are:
  - `trip.platformAvailable` *(boolean)*: ?
  - `trip.disruptionsAvailable` *(boolean)*: ?
  - `trip.arrivalTimeAvailable` *(boolean)*: ?
- - `trip.nextTrainsList` *(list[[Train](train)])*: List of the next trains
+ - `trip.nextTrainsList` *(list[[Train](#train)])*: List of the next trains
  - `trip.departureStopArea` *(dict})*: Details about departure station
  - `trip.arrivalStopArea` *(obj)*: Details about arrival station
 
@@ -104,7 +104,7 @@ Train object attributes are:
  - deservedStations *(List[dict{label, time}])*
  - hastringaficDisruption *(boolean)*
  - hastringavauxDisruption *(boolean)*
- - disruptions *(List[[Disruption](disruption)])*
+ - disruptions *(List[[Disruption](#disruption)])*
  
 ### Disruption
  
