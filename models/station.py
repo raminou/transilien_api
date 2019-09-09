@@ -93,6 +93,12 @@ class Station:
 
     @staticmethod
     def search_list_places(name, filter_item=PlaceType.no_filter):
+        if(isinstance(filter_item, str)):
+            for member in PlaceType:
+                if(member.name == filter_item):
+                    filter_item = member
+                    break
+
         if(not isinstance(filter_item, PlaceType)):
             raise TypeError("filter_item must have the type PlaceType")
         r = requests.get("https://www.transilien.com/api/places", params={"search": name})
